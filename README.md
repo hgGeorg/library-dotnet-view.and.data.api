@@ -20,7 +20,7 @@ The wrapper is using async methods, so .Net 4.5 is required to use the library
 
 
 
-Written by Philippe Leefsma: 
+Written by Philippe Leefsma:   
 http://adndevblog.typepad.com/cloud_and_mobile/philippe-leefsma.html
 
 
