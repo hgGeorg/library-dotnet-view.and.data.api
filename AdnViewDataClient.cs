@@ -21,6 +21,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Autodesk.ADN.Toolkit.ViewData.DataContracts;
 using Newtonsoft.Json;
@@ -41,12 +42,6 @@ namespace Autodesk.ADN.Toolkit.ViewData
 
         private string _secretKey;
 
-        public TokenResponse TokenResponse
-        {
-            get;
-            private set;
-        }
-
         /////////////////////////////////////////////////////////////////////////////////
         // Constructor
         //
@@ -54,15 +49,38 @@ namespace Autodesk.ADN.Toolkit.ViewData
         public AdnViewDataClient(
             string serviceUrl,
             string clientKey,
-            string secretKey)
+            string secretKey,
+            bool autoRefresh = true)
         { 
             _clientKey = clientKey;
 
             _secretKey = secretKey;
 
+            AutoRefresh = autoRefresh;
+
             TokenResponse = new TokenResponse();
 
             _restClient = new RestClient(serviceUrl);     
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////
+        // 
+        //
+        /////////////////////////////////////////////////////////////////////////////////
+        public bool AutoRefresh
+        {
+            get;
+            set;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////
+        // 
+        //
+        /////////////////////////////////////////////////////////////////////////////////
+        public TokenResponse TokenResponse
+        {
+            get;
+            private set;
         }
 
         /////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +114,20 @@ namespace Autodesk.ADN.Toolkit.ViewData
             {
                 return tokenResponse;
             }
+
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+
+                Thread.Sleep(TimeSpan.FromSeconds(
+                    tokenResponse.ExpirationTime));
+
+                if (AutoRefresh)
+                {
+                    AuthenticateAsync().Wait();
+                }
+                
+            }).Start();
 
             TokenResponse = tokenResponse;
 
@@ -290,9 +322,9 @@ namespace Autodesk.ADN.Toolkit.ViewData
         }
     
         /////////////////////////////////////////////////////////////////////////////////
-        // GET /viewingservice/{apiversion}/bubbles/{urn}?guid=$GUID$
-        // GET /viewingservice/{apiversion}/bubbles/{urn}/status?guid=$GUID$
-        // GET /viewingservice/{apiversion}/bubbles/{urn}/all?guid=$GUID$
+        // GET /viewingservice/{apiversion}/{urn}?guid=$GUID$
+        // GET /viewingservice/{apiversion}/{urn}/status?guid=$GUID$
+        // GET /viewingservice/{apiversion}/{urn}/all?guid=$GUID$
         //
         /////////////////////////////////////////////////////////////////////////////////
         public async Task<ViewableResponse> GetViewableAsync(
@@ -398,8 +430,21 @@ namespace Autodesk.ADN.Toolkit.ViewData
                         return errorResponse;
                     }
 
+                    List<Newtonsoft.Json.Serialization.ErrorEventArgs> jsonErrors =
+                        new List<Newtonsoft.Json.Serialization.ErrorEventArgs>();
+
                     T response = JsonConvert.DeserializeObject<T>(
-                           httpResponse.Content);
+                           httpResponse.Content,
+                           new JsonSerializerSettings
+                            {
+                                Error = (object sender,
+                                    Newtonsoft.Json.Serialization.ErrorEventArgs args) =>
+                                {
+                                    args.ErrorContext.Handled = true;
+
+                                    jsonErrors.Add(args);
+                                }
+                            });
 
                     return response;
                 }
@@ -426,6 +471,13 @@ namespace Autodesk.ADN.Toolkit.ViewData
             byte[] bytes = Encoding.UTF8.GetBytes(str);
 
             return Convert.ToBase64String(bytes);
+        }
+
+        public static string FromBase64(this string str)
+        {
+            byte[] bytes = Convert.FromBase64String(str);
+
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }

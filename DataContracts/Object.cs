@@ -116,17 +116,24 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
 
         public static FileUploadInfo CreateFromFile(string key, string filename)
         {
-            var result = new FileUploadInfo();
+            try
+            {
+                var result = new FileUploadInfo();
 
-            result.Key = key;
+                result.Key = key;
 
-            FileStream fstream = File.Open(filename, FileMode.Open);
+                FileStream fstream = File.Open(filename, FileMode.Open);
 
-            result.Length = fstream.Length;
+                result.Length = fstream.Length;
 
-            result.InputStream = fstream;
+                result.InputStream = fstream;
 
-            return result;
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 

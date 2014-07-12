@@ -17,6 +17,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -32,7 +33,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
     /////////////////////////////////////////////////////////////////////////////////
     public abstract class ViewDataResponseBase
     {
-        [System.ComponentModel.Browsable(false)]
+        [Browsable(false)]
         public ViewDataError Error
         {
             get;

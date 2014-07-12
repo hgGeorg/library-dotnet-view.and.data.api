@@ -17,6 +17,8 @@
 /////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
 {
@@ -47,94 +49,140 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         public int Order
         {
             get;
-            set;
+            private set;
         }
 
         public string Version
         {
             get;
-            set;
+            private set;
         }
 
         public string Type
         {
             get;
-            set;
+            private set;
         }
 
         public string Name
         {
             get;
-            set;
+            private set;
         }
 
         public bool HasThumbnail
         {
             get;
-            set;
+            private set;
         }
 
         public string Mime
         {
             get;
-            set;
+            private set;
         }
 
         public string Progress
         {
             get;
-            set;
+            private set;
         }
 
         public string Role
         {
             get;
-            set;
+            private set;
         }
 
-        public string Urn
+        public string URN
         {
             get;
             set;
+        }
+
+        [DisplayName("File Id")]
+        public string FileId
+        {
+            get
+            {
+                return (URN != null ? 
+                    URN.FromBase64() : "");
+            }
         }
 
         public string Result
         {
             get;
-            set;
+            private set;
         }
 
+        [Browsable(false)]
         public List<ViewableResponse> Children
         {
             get;
-            set;
+            private set;
         }
 
         public List <double> Camera
         {
             get;
-            set;
+            private set;
         }
 
-        public List<int> Resolution
+        public List<double> Resolution
         {
             get;
-            set;
+            private set;
         }
 
         public List<ViewableMessage> Messages
         {
             get;
-            set;
+            private set;
         }
 
         public ViewableResponse()
         {
             Camera = new List<double>();
-            Resolution = new List<int>();  
+            Resolution = new List<double>();  
             Children = new List<ViewableResponse>();           
             Messages = new List <ViewableMessage>();
         }
+
+        [JsonConstructor]
+        public ViewableResponse(
+            string guid,
+            int order,
+            string version,
+            string type,
+            string name,
+            bool hasThumbnail,
+            string mime,
+            string progress,
+            string role,
+            string urn,
+            string result,
+            List<ViewableResponse> children,
+            List <double> camera,
+            List<double> resolution,
+            List<ViewableMessage> messages)
+            {
+                Guid = guid;
+                Order = order;
+                Version = version;
+                Type = type;
+                Name = name;
+                HasThumbnail = hasThumbnail;
+                Mime = mime;
+                Progress = progress;
+                Role = role;
+                URN = urn;
+                Result = result;
+                Children = children;
+                Camera = camera;
+                Resolution = resolution;
+                Messages = messages;
+            }
     }
 
     public class ViewableMessage
@@ -142,19 +190,35 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         public string Type
         {
             get;
-            set;
+            private set;
         }
 
-        public int code
+        public int Code
         {
             get;
-            set;
+            private set;
         }
 
         public string Message
         {
             get;
-            set;
+            private set;
+        }
+
+        public ViewableMessage()
+        { 
+        
+        }
+
+        [JsonConstructor]
+        public ViewableMessage(
+            string type,
+            int code,
+            string message)
+        {
+            Type = type;
+            Code = code;
+            Message = message;
         }
     }
 }
