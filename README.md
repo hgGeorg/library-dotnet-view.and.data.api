@@ -18,7 +18,7 @@ The wrapper is using async methods, so .Net 4.5 is required to use the library. 
 
 ## License
 
-workflow-curl-view.and.data.api is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
+This sample is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
 
 ##Written by 
 
