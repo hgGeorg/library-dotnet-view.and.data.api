@@ -14,9 +14,9 @@ The wrapper is using async methods, so .Net 4.5 is required to use the library. 
 
 ##Setup/Usage Instructions
 
-*Compile the project or include it inside your own solution if you wish to customize the source code
-*Reference the dll from any .Net 4.5 compatible project (Winform, WPF, Asp.Net, ...)
-*A good example on how to use the lib can be found in this project: [workflow-wpf-view.and.data.api](https://github.com/Developer-Autodesk/workflow-wpf-view.and.data.api)
+* Compile the project or include it inside your own solution if you wish to customize the source code
+* Reference the dll from any .Net 4.5 compatible project (Winform, WPF, Asp.Net, ...)
+* A good example on how to use the lib can be found in this project: [workflow-wpf-view.and.data.api](https://github.com/Developer-Autodesk/workflow-wpf-view.and.data.api)
 
 ## License
 
