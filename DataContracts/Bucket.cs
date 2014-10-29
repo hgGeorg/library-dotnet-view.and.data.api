@@ -97,7 +97,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
 
             return result;
         }
-    }
+        }
 
     /////////////////////////////////////////////////////////////////////////////////
     // Bucket Details Response 
@@ -148,15 +148,35 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         public BucketDetailsResponse(
             string bucketKey,
             string owner,
-            DateTime createdDate,
+            double createDate,
             List<ServicesAllowed> permissions,
             string policy)
         {
             BucketKey = bucketKey;
             Owner = owner;
-            CreatedDate = createdDate;
+            CreatedDate = FromUnixTime(createDate);
             Permissions = permissions;
             Policy = policy;
+        }
+
+        public BucketDetailsResponse(
+            string bucketKey,
+            string owner,
+            DateTime createDate,
+            List<ServicesAllowed> permissions,
+            string policy)
+        {
+            BucketKey = bucketKey;
+            Owner = owner;
+            CreatedDate = createDate;
+            Permissions = permissions;
+            Policy = policy;
+        }
+
+        static DateTime FromUnixTime(double unixTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unixTime * 0.001);
         }
     }
 }

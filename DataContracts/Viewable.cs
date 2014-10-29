@@ -88,6 +88,24 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
             private set;
         }
 
+        public string Status
+        {
+            get;
+            private set;
+        }
+
+        public string Success
+        {
+            get;
+            private set;
+        }
+
+        public string StartedAt
+        {
+            get;
+            private set;
+        }
+
         public string Role
         {
             get;
@@ -159,6 +177,9 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
             bool hasThumbnail,
             string mime,
             string progress,
+            string status,
+            string success,
+            string startedAt,
             string role,
             string urn,
             string result,
@@ -175,6 +196,9 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
                 HasThumbnail = hasThumbnail;
                 Mime = mime;
                 Progress = progress;
+                Status = status;
+                Success = success;
+                StartedAt = startedAt;
                 Role = role;
                 URN = urn;
                 Result = result;
@@ -193,7 +217,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
             private set;
         }
 
-        public int Code
+        public string Code
         {
             get;
             private set;
@@ -213,7 +237,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         [JsonConstructor]
         public ViewableMessage(
             string type,
-            int code,
+            string code,
             string message)
         {
             Type = type;

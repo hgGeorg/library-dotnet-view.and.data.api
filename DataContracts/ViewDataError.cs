@@ -22,6 +22,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
 {
@@ -62,6 +63,12 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
             set;
         }
 
+        public List<ErrorEventArgs> JsonErrors
+        {
+            get;
+            set;
+        }
+
         public Exception Exception
         {
             get;
@@ -81,6 +88,11 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         public ViewDataError(HttpStatusCode statusCode)
         {
             StatusCode = statusCode;
+        }
+
+        public ViewDataError(List<ErrorEventArgs> jsonErrors)
+        {
+            JsonErrors = jsonErrors;
         }
     }
 }
