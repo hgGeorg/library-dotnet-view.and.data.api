@@ -119,7 +119,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         }
 
         [DisplayName("Created Date")]
-        public DateTime CreatedDate
+        public DateTime CreateDate
         {
             get;
             private set;
@@ -154,7 +154,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         {
             BucketKey = bucketKey;
             Owner = owner;
-            CreatedDate = FromUnixTime(createDate);
+            CreateDate = FromUnixTime(createDate);
             Permissions = permissions;
             Policy = policy;
         }
@@ -168,7 +168,7 @@ namespace Autodesk.ADN.Toolkit.ViewData.DataContracts
         {
             BucketKey = bucketKey;
             Owner = owner;
-            CreatedDate = createDate;
+            CreateDate = createDate;
             Permissions = permissions;
             Policy = policy;
         }
